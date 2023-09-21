@@ -13,4 +13,10 @@ public class Ingredient : MonoBehaviour
         triggerGO.transform.localPosition = new Vector3(0, 0.004f, 0); 
     }
 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        gameObject.transform.GetChild(0).GetComponent<Trigger>().TriggerFlag();
+    }
 }

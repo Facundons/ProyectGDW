@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 0.38838458, z: 0.19195321}
-  m_Center: {x: 0.007806912, y: 0.043755412, z: 0.000000037252903}
+  m_Size: {x: 0.1, y: 0.36, z: 0.19195321}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-5381397814999081040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,3 +68,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystemPrefab: {fileID: 77217271746939849, guid: a294df9daea9b8a4f8cbcd8d1a86c601,
     type: 3}
+  IsPlateTrigger: 0

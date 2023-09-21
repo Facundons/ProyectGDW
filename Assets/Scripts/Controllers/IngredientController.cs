@@ -6,10 +6,12 @@ public class IngredientController : MonoBehaviour
 {
     [SerializeField] private GameObject[] ingredientPrefabs;
     private GameObject currentIngredient;
+    private List<GameObject> currentLvlIngridients = new List<GameObject>();
+    private int amountOfIngredientsOnLvl;
+    private int currentIngredientNumber = 0;
 
     void Update()
     {
-        // Check for player input to release the ingredient
         if (Input.GetMouseButtonDown(0))
         {
      
@@ -17,23 +19,44 @@ public class IngredientController : MonoBehaviour
         }
     }
 
-    // Spawn a new ingredient and attach it to the spawner
-    void SpawnIngredient()
+    public int GetCurrentIngridientNumber()
     {
-        int randomIndex = Random.Range(0, ingredientPrefabs.Length);
-        currentIngredient = Instantiate(ingredientPrefabs[randomIndex]);
-        currentIngredient.transform.position = transform.position;
+        return amountOfIngredientsOnLvl;
     }
 
-    // Release the current ingredient and spawn a new one
+    public void SetCurentLvl(GameObject currentLvl)
+    {
+        currentLvlIngridients.Clear();
+        amountOfIngredientsOnLvl = currentLvl.transform.childCount;
+        currentIngredientNumber = 0;
+
+        for (int i = 0; i < amountOfIngredientsOnLvl; i++)
+        {
+
+            foreach (GameObject ingredient in ingredientPrefabs)
+            {
+                if (ingredient.name == currentLvl.transform.GetChild(i).name)
+                {
+                    currentLvlIngridients.Add(ingredient);
+                }
+            }
+        }
+
+    }
+
+    void SpawnIngredient()
+    {
+        if (currentIngredientNumber < amountOfIngredientsOnLvl)
+        {
+            currentIngredient = Instantiate(currentLvlIngridients[currentIngredientNumber]);
+            currentIngredient.transform.position = transform.position;
+            currentIngredientNumber++;
+        }
+    }
+
     void ReleaseIngredient()
     {
-        // Detach the ingredient from the spawner
-       // currentIngredient.transform.parent = null;
-
-        // Optionally, you can add additional logic here, like applying physics to the released ingredient
-
-        // Spawn a new ingredient
+        
         SpawnIngredient();
     }
 

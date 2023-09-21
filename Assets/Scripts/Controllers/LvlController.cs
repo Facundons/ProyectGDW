@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class LvlController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject[] LvlsSandwich;
+    private int currentLvl;
+
+
+    public void ShowLvl(int lvl)
     {
-        
+        currentLvl = lvl;
+        LvlsSandwich[lvl].SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void HideLvl(int lvl)
     {
-        
+        LvlsSandwich[lvl].SetActive(false);
     }
+
+    public GameObject getCurrentLvl()
+    {
+        return LvlsSandwich[currentLvl];
+    }
+
 }
