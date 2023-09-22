@@ -10,19 +10,23 @@ public class GameController : MonoBehaviour
     [SerializeField] private CameraController cameraController;
     [SerializeField] private IngredientController ingredientController;
     [SerializeField] private UiController uiController;
+    [SerializeField] private PendlumController pendlumController;
+
     private int lvlNumber;
 
     private void Start()
     {
-        lvlNumber = 0;
+        CameraController.onIngredientReachingTheTop += MoveElements;
+        IngredientController.onLvlComplete += LvlComplete;
+        lvlNumber = 1;
         SetStartLvl();
     }
 
-    IEnumerator ExecuteAfterTime(float time)
+    IEnumerator ZoomOutAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
         cameraController.ZoomCameraOut();
-       
+        lvlController.MoveLvlSandwichToTop();
     }
 
     private void SetStartLvl()
@@ -31,8 +35,19 @@ public class GameController : MonoBehaviour
         ingredientController.SetCurentLvl(lvlController.getCurrentLvl());
         uiController.SetTextLvl(lvlNumber, lvlController.getCurrentLvl());
         uiController.CalculateScore(ingredientController.GetCurrentIngridientNumber());
-        StartCoroutine(ExecuteAfterTime(5.0f));
+        StartCoroutine(ZoomOutAfterTime(2.0f));
     }
 
+    private void LvlComplete()
+    {
+        
+
+    }
+
+    private void MoveElements()
+    {
+        pendlumController.MovePendlumUp();
+        lvlController.MoveLvlSandwich();
+    }
 
 }

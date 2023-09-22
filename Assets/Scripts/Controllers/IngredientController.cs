@@ -9,6 +9,9 @@ public class IngredientController : MonoBehaviour
     private List<GameObject> currentLvlIngridients = new List<GameObject>();
     private int amountOfIngredientsOnLvl;
     private int currentIngredientNumber = 0;
+    private List<GameObject> ingredientsReleased = new List<GameObject>();
+    public delegate void OnLvlComplete();
+    public static OnLvlComplete onLvlComplete;
 
     void Update()
     {
@@ -50,8 +53,46 @@ public class IngredientController : MonoBehaviour
         {
             currentIngredient = Instantiate(currentLvlIngridients[currentIngredientNumber]);
             currentIngredient.transform.position = transform.position;
+            ingredientsReleased.Add(currentIngredient);
             currentIngredientNumber++;
         }
+        else
+        {
+            onLvlComplete?.Invoke();
+            StartCoroutine(MoveIngridientsToPerson(0f));
+        }
+    }
+
+
+    IEnumerator MoveIngridientsToPerson(float time) {
+
+        yield return new WaitForSeconds(time);
+        foreach (GameObject ingredient in ingredientsReleased)
+        {  
+            if (ingredient != null) {
+
+                StartCoroutine(MoveObject(ingredient ,1 ));
+            }
+        }
+    }
+
+
+    IEnumerator MoveObject(GameObject ingredient, float time)
+    {
+        ingredient.GetComponent<Rigidbody>().isKinematic = true;
+        var SandwichDestination = new Vector3(ingredient.transform.position.x, ingredient.transform.position.y + 2.5f, 3.38f);
+        Vector3 startPosition = ingredient.transform.position;
+        float startTime = Time.time;
+        float endTime = startTime + time;
+
+        while (Time.time < endTime)
+        {
+            float t = (Time.time - startTime) / time;
+            ingredient.transform.position = Vector3.Lerp(startPosition, SandwichDestination, t);
+            yield return null;
+        }
+
+        transform.position = SandwichDestination;
     }
 
     void ReleaseIngredient()

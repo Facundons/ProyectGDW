@@ -13,7 +13,7 @@ public class ScoreController : MonoBehaviour
     {
         Trigger.onPerfectPosition += SumPerfectPositionScore;
         Trigger.onGoodPosition += SumGoodPositionScore;
-
+        Trigger.onIngredientFall += DecreaseScore;
     }
 
     private void SumPerfectPositionScore()
@@ -26,6 +26,11 @@ public class ScoreController : MonoBehaviour
         UpdateScoreText(totalStepScore/2);
     }
 
+    private void DecreaseScore()
+    {
+        UpdateScoreText(-totalStepScore / 2);
+    }
+
     public void CalculateScoreStep(int totalIngredients)
     {
         totalStepScore = 100 / totalIngredients;
@@ -33,6 +38,7 @@ public class ScoreController : MonoBehaviour
 
     private void UpdateScoreText(int scoreSum)
     {
+        if (score == 0 && scoreSum < 0) return;
         score += scoreSum;
         if (score >= 98) scoreText.text = "100%";
         else scoreText.text = score + "%";

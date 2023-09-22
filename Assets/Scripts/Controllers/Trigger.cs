@@ -10,6 +10,8 @@ public class Trigger : MonoBehaviour
     public static OnPerfectPosition onPerfectPosition;
     public delegate void OnGoodPosition();
     public static OnGoodPosition onGoodPosition;
+    public delegate void OnIngredientFall();
+    public static OnIngredientFall onIngredientFall;
     private int triggerFlag;
     public bool IsPlateTrigger;
         
@@ -28,6 +30,13 @@ public class Trigger : MonoBehaviour
             onPerfectPosition?.Invoke();
             triggerFlag++;
         }
+        if (other.gameObject.name.Contains("IndredientDropCollider") && other.isTrigger)
+        {
+            onIngredientFall?.Invoke();
+            Destroy(gameObject.transform.parent.gameObject);
+        }
+       
+       
     }
 
     public void TriggerFlag()

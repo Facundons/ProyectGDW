@@ -5,9 +5,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
-    public Vector3 targetZoomIn = new Vector3(0f, -2f, -1f); // The target position to zoom in on
-    public Vector3 targetZoomOut = new Vector3(0f, 0f, -7f); // The target position to zoom out to
-    public float zoomTime = 1.0f;
+    private Vector3 targetZoomIn = new Vector3(0f, -2f, -1.4f);
+    private Vector3 targetZoomOut = new Vector3(0f, 0f, -7f);
+    private bool hasTriggered = false;
+    public float zoomTime;
+    public delegate void OnIngredientReachingTheTop();
+    public static OnIngredientReachingTheTop onIngredientReachingTheTop;
 
     public void ZoomCameraIn()
     {
@@ -46,4 +49,24 @@ public class CameraController : MonoBehaviour
         }
 
     }
+
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.name.Contains("Trigger") && other.transform.parent.GetComponent<Rigidbody>().velocity.y > 0 && !hasTriggered )
+        {
+            onIngredientReachingTheTop?.Invoke();
+            LeanTween.moveY(gameObject, gameObject.transform.position.y + 0.5f, 2f).setEase(LeanTweenType.easeInOutQuad);
+            hasTriggered = true;
+            StartCoroutine(WaitForCameraMovement());
+        }
+    }
+
+    IEnumerator WaitForCameraMovement()
+    {
+        yield return new WaitForSeconds(2f);
+        hasTriggered = false;
+    }
+
 }
