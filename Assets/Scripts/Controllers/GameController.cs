@@ -11,14 +11,15 @@ public class GameController : MonoBehaviour
     [SerializeField] private IngredientController ingredientController;
     [SerializeField] private UiController uiController;
     [SerializeField] private PendlumController pendlumController;
-
+    [SerializeField] private PersonController personController;
     private int lvlNumber;
 
     private void Start()
     {
         CameraController.onIngredientReachingTheTop += MoveElements;
         IngredientController.onLvlComplete += LvlComplete;
-        lvlNumber = 1;
+        UiController.onNextLvlClick += SetNextLvl;
+        lvlNumber = 0;
         SetStartLvl();
     }
 
@@ -40,14 +41,23 @@ public class GameController : MonoBehaviour
 
     private void LvlComplete()
     {
-        
-
+        pendlumController.MoveYPendlum(5.5f);
+        personController.ShowEmoji(uiController.GetScore());
+        uiController.ShowEndScreenLvlScreen();
     }
 
     private void MoveElements()
     {
-        pendlumController.MovePendlumUp();
+        pendlumController.MoveYPendlum(0.5f);
         lvlController.MoveLvlSandwich();
     }
 
+    private void SetNextLvl()
+    { 
+        cameraController.ZoomCameraIn();   
+        pendlumController.ResetPendlumForLvlStart();
+        lvlController.DisableLastSandwichLvlOnUi();
+        lvlNumber++;
+        SetStartLvl();
+    }
 }

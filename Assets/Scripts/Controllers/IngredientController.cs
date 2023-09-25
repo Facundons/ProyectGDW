@@ -12,14 +12,29 @@ public class IngredientController : MonoBehaviour
     private List<GameObject> ingredientsReleased = new List<GameObject>();
     public delegate void OnLvlComplete();
     public static OnLvlComplete onLvlComplete;
+    private bool hasClicked = false;
+    private bool isZooming = true;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !hasClicked && !isZooming)
         {
-     
-            ReleaseIngredient();
+            SpawnIngredient();
+            hasClicked = true;
+            StartCoroutine(ReleaseClick());
         }
+    }
+
+    private void Awake()
+    {
+        CameraController.onCameraZoomedIn += () => { isZooming = true; Debug.Log(isZooming); };
+        CameraController.onCameraZoomedOut += () => { isZooming = false; Debug.Log(isZooming); };
+    }
+
+    private IEnumerator ReleaseClick()
+    {
+        yield return new WaitForSeconds(1f);
+        hasClicked = false;
     }
 
     public int GetCurrentIngridientNumber()
@@ -55,14 +70,20 @@ public class IngredientController : MonoBehaviour
             currentIngredient.transform.position = transform.position;
             ingredientsReleased.Add(currentIngredient);
             currentIngredientNumber++;
-        }
-        else
-        {
-            onLvlComplete?.Invoke();
-            StartCoroutine(MoveIngridientsToPerson(0f));
-        }
+            if(currentIngredientNumber == amountOfIngredientsOnLvl)
+            {
+                StartCoroutine(EndLvl());
+            }
+        }              
     }
 
+
+    IEnumerator EndLvl()
+    {
+        yield return new WaitForSeconds(3f);
+        onLvlComplete?.Invoke();
+        StartCoroutine(MoveIngridientsToPerson(0f));
+    }
 
     IEnumerator MoveIngridientsToPerson(float time) {
 
@@ -75,7 +96,6 @@ public class IngredientController : MonoBehaviour
             }
         }
     }
-
 
     IEnumerator MoveObject(GameObject ingredient, float time)
     {
@@ -93,12 +113,6 @@ public class IngredientController : MonoBehaviour
         }
 
         transform.position = SandwichDestination;
-    }
-
-    void ReleaseIngredient()
-    {
-        
-        SpawnIngredient();
     }
 
 }

@@ -11,6 +11,28 @@ public class CameraController : MonoBehaviour
     public float zoomTime;
     public delegate void OnIngredientReachingTheTop();
     public static OnIngredientReachingTheTop onIngredientReachingTheTop;
+    public delegate void OnCameraZoomedIn();
+    public static OnCameraZoomedIn onCameraZoomedIn;
+    public delegate void OnCameraZoomedOut();
+    public static OnCameraZoomedOut onCameraZoomedOut;
+
+
+    private void Awake()
+    {
+        UiController.onCombo += shakeCamera;
+    }
+
+    private void shakeCamera(float combo)
+    {
+        if (combo != 1) StartCoroutine(ShakeCamera());
+    }
+
+    private IEnumerator ShakeCamera()
+    {
+        var twistTween = LeanTween.rotate(gameObject, new Vector3(0f, 0f, Random.Range(-5, +5)), 0.5f).setEase(LeanTweenType.easeInOutCubic).setLoopPingPong();
+        yield return new WaitForSeconds(1f);
+        LeanTween.cancel(twistTween.uniqueId);
+    }
 
     public void ZoomCameraIn()
     {
@@ -26,14 +48,14 @@ public class CameraController : MonoBehaviour
     {
         Vector3 startPosition = transform.position;
         float elapsedTime = 0;
-
+        onCameraZoomedIn?.Invoke();
         while (elapsedTime < zoomTime)
         {
             elapsedTime += Time.deltaTime;
             transform.position = Vector3.Lerp(startPosition, targetZoomIn, elapsedTime / zoomTime);
             yield return null;
         }
-     
+
     }
 
     public IEnumerator ZoomOut()
@@ -43,11 +65,11 @@ public class CameraController : MonoBehaviour
 
         while (elapsedTime < zoomTime)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime;            
             transform.position = Vector3.Lerp(startPosition, targetZoomOut, elapsedTime / zoomTime);
             yield return null;
         }
-
+        if (elapsedTime >= zoomTime) onCameraZoomedOut?.Invoke();
     }
 
 

@@ -14,7 +14,8 @@ public class Trigger : MonoBehaviour
     public static OnIngredientFall onIngredientFall;
     private int triggerFlag;
     public bool IsPlateTrigger;
-        
+    private ParticleSystem particleInstance;
+
     private void Awake()
     {
         triggerFlag = 0;
@@ -25,7 +26,7 @@ public class Trigger : MonoBehaviour
         if (IsPlateTrigger) return;
         if (other.gameObject.name.Contains("Trigger") && other.isTrigger && triggerFlag == 0)
         {
-            ParticleSystem particleInstance = Instantiate(particleSystemPrefab, transform.position, Quaternion.identity);
+            particleInstance = Instantiate(particleSystemPrefab, transform.position, Quaternion.identity);
             particleSystemPrefab.Play();
             onPerfectPosition?.Invoke();
             triggerFlag++;
@@ -33,10 +34,13 @@ public class Trigger : MonoBehaviour
         if (other.gameObject.name.Contains("IndredientDropCollider") && other.isTrigger)
         {
             onIngredientFall?.Invoke();
-            Destroy(gameObject.transform.parent.gameObject);
-        }
-       
-       
+            if (gameObject.transform.parent.gameObject != null) gameObject.transform.parent.gameObject.SetActive(false);    
+        }        
+    }
+    
+    public void DestroyParticles()
+    {
+      //  if (particleInstance.gameObject != null) Destroy(particleInstance.gameObject);
     }
 
     public void TriggerFlag()

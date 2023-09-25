@@ -20,8 +20,18 @@ public class PendlumController : MonoBehaviour
     }
 
 
-    public void MovePendlumUp()
+    public void MoveYPendlum(float yMovement)
     {
-        var tween = LeanTween.moveY(gameObject, gameObject.transform.position.y + 0.5f, 2f).setEase(LeanTweenType.easeInOutQuad);
+        var ingredientSpawner = gameObject.transform.GetChild(0).gameObject;
+        var pendlumTween = LeanTween.moveY(gameObject, gameObject.transform.position.y +yMovement, 2f).setEase(LeanTweenType.easeInOutQuad);
+        pendlumTween.setOnComplete(()=> { ingredientSpawner.transform.localPosition = new Vector3(0, -12.67f, 0); });
+    }
+
+
+    public void ResetPendlumForLvlStart()
+    {
+        var ingredientSpawner = gameObject.transform.GetChild(0).gameObject;
+        var pendlumTween = LeanTween.moveY(gameObject, 4.05f, 2f).setEase(LeanTweenType.easeInOutQuad);      
+        pendlumTween.setOnComplete(() => { ingredientSpawner.transform.localPosition = new Vector3(0, -12.67f, 0); });
     }
 }

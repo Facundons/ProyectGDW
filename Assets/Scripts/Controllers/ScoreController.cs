@@ -44,4 +44,19 @@ public class ScoreController : MonoBehaviour
         else scoreText.text = score + "%";
     }
 
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void SetActiveScoreText(bool isActive)
+    {
+        scoreText.gameObject.SetActive(isActive);
+    }
+
+    public void ResetScore()
+    {
+        score = 0;
+        scoreText.text = "0%";
+    }
 }
