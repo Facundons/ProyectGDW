@@ -27,8 +27,8 @@ public class IngredientController : MonoBehaviour
 
     private void Awake()
     {
-        CameraController.onCameraZoomedIn += () => { isZooming = true; Debug.Log(isZooming); };
-        CameraController.onCameraZoomedOut += () => { isZooming = false; Debug.Log(isZooming); };
+        CameraController.onCameraZoomedIn += () => { isZooming = true; };
+        CameraController.onCameraZoomedOut += () => { isZooming = false; };
     }
 
     private IEnumerator ReleaseClick()
@@ -59,6 +59,11 @@ public class IngredientController : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    private void SetIngredientOnPendlum()
+    {
 
     }
 

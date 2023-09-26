@@ -44,6 +44,11 @@ public class GameController : MonoBehaviour
         pendlumController.MoveYPendlum(5.5f);
         personController.ShowEmoji(uiController.GetScore());
         uiController.ShowEndScreenLvlScreen();
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("ComboParticles");
+        foreach (GameObject obj in gameObjects)
+        {
+            Destroy(obj);
+        }
     }
 
     private void MoveElements()

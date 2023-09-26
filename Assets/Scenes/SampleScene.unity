@@ -2773,9 +2773,6 @@ MonoBehaviour:
   star25: {fileID: 1808952360893547928}
   star50: {fileID: 1207084939}
   star75: {fileID: 637938948}
-  starParticle25: {fileID: 0}
-  starParticle50: {fileID: 0}
-  starParticle75: {fileID: 0}
   comboText: {fileID: 2030239625}
 --- !u!114 &852247897
 MonoBehaviour:
@@ -3203,7 +3200,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 23.136646, y: 0.5709102, z: 15.00932}
-  m_Center: {x: -0.36024857, y: -1.34, z: 3.4110856}
+  m_Center: {x: -0.36024857, y: -0.69, z: 3.4110856}
 --- !u!1 &1043048940
 GameObject:
   m_ObjectHideFlags: 0

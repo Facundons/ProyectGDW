@@ -24,12 +24,12 @@ public class CameraController : MonoBehaviour
 
     private void shakeCamera(float combo)
     {
-        if (combo != 1) StartCoroutine(ShakeCamera());
+        if (combo > 2) StartCoroutine(ShakeCamera());
     }
 
     private IEnumerator ShakeCamera()
     {
-        var twistTween = LeanTween.rotate(gameObject, new Vector3(0f, 0f, Random.Range(-5, +5)), 0.5f).setEase(LeanTweenType.easeInOutCubic).setLoopPingPong();
+        var twistTween = LeanTween.rotate(gameObject, new Vector3(0f, 0f, Random.Range(-2, +2)), 0.5f).setEase(LeanTweenType.easeInOutCubic).setLoopPingPong();
         yield return new WaitForSeconds(1f);
         LeanTween.cancel(twistTween.uniqueId);
     }
