@@ -10,7 +10,7 @@ public class PersonController : MonoBehaviour
     [SerializeField] private ParticleSystem confetiParticles;
 
     public void ShowEmoji(int score) {
-        var emoji = new GameObject();
+        GameObject emoji;
         switch (score)
         {
             case int val when score >= 75:
